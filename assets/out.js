@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 6);
+/******/ 	return __webpack_require__(__webpack_require__.s = 4);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -73,54 +73,11 @@
 "use strict";
 
 
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var DOM3D = function () {
-    function DOM3D() {
-        _classCallCheck(this, DOM3D);
-    }
-
-    _createClass(DOM3D, [{
-        key: "getEl",
-
-        // Get first element matching passed query
-        value: function getEl(query) {
-            return document.querySelector(query);
-        }
-        // Get all elements matching passed query
-
-    }, {
-        key: "getEls",
-        value: function getEls(query) {
-            return [].concat(_toConsumableArray(document.querySelectorAll(query)));
-        }
-    }]);
-
-    return DOM3D;
-}();
-
-exports.default = DOM3D;
-
-/***/ }),
-/* 1 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _scene = __webpack_require__(5);
+var _scene = __webpack_require__(3);
 
 var _scene2 = _interopRequireDefault(_scene);
 
-var _freeCam = __webpack_require__(4);
+var _freeCam = __webpack_require__(2);
 
 var _freeCam2 = _interopRequireDefault(_freeCam);
 
@@ -164,99 +121,13 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 /***/ }),
-/* 2 */
+/* 1 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 3 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _DOM3D2 = __webpack_require__(0);
-
-var _DOM3D3 = _interopRequireDefault(_DOM3D2);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var Page = function (_DOM3D) {
-    _inherits(Page, _DOM3D);
-
-    function Page(elem) {
-        _classCallCheck(this, Page);
-
-        var _this = _possibleConstructorReturn(this, (Page.__proto__ || Object.getPrototypeOf(Page)).call(this));
-
-        _this.DOM = elem;
-        _this.false = true;
-        _this.rotation = null;
-        _this.translation = null;
-        return _this;
-    }
-    // Get values of pages if setPositionForPages method wasn't called
-    // getValues (elem, prop) {
-    //     const base = '\\((\\d+)\\w*\\)';
-    //     const x = new RegExp(`${prop}X${base}`);
-    //     const y = new RegExp(`${prop}Y${base}`);
-    //     const z = new RegExp(`${prop}Z${base}`);
-    //     const t = elem.style.transform;
-    //     return {
-    //         X : x.exec(t) ? parseInt(x.exec(t)[1]) : 0,
-    //         Y : y.exec(t) ? parseInt(y.exec(t)[1]) : 0,
-    //         Z : z.exec(t) ? parseInt(z.exec(t)[1]) : 0,
-    //     };
-    // }
-    // Set values for rotation and translate from object.
-
-
-    _createClass(Page, [{
-        key: 'setValues',
-        value: function setValues(valObj) {
-            this.rotation = {
-                X: valObj.rX || 0,
-                Y: valObj.rY || 0,
-                Z: valObj.rZ || 0
-            };
-            this.translation = {
-                X: valObj.tX || 0,
-                Y: valObj.tY || 0,
-                Z: valObj.tZ || 0
-            };
-            this.update();
-        }
-        // Update transform for DOM element
-
-    }, {
-        key: 'update',
-        value: function update() {
-            var translate = this.translation.X + 'px, ' + this.translation.Y + 'px, ' + this.translation.Z + 'px';
-            var transform = 'translate3d(' + translate + ') rotateX(' + this.rotation.X + 'deg) rotateY(' + this.rotation.Y + 'deg) rotateZ(' + this.rotation.Z + 'deg)';
-            this.DOM.style.transform = transform;
-        }
-    }]);
-
-    return Page;
-}(_DOM3D3.default);
-
-exports.default = Page;
-
-/***/ }),
-/* 4 */
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -338,7 +209,7 @@ var FreeCam = function () {
 exports.default = FreeCam;
 
 /***/ }),
-/* 5 */
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -352,11 +223,11 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _DOM3D2 = __webpack_require__(0);
+var _DOM3D2 = __webpack_require__(5);
 
 var _DOM3D3 = _interopRequireDefault(_DOM3D2);
 
-var _Page = __webpack_require__(3);
+var _Page = __webpack_require__(6);
 
 var _Page2 = _interopRequireDefault(_Page);
 
@@ -481,12 +352,141 @@ var Scene = function (_DOM3D) {
 exports.default = Scene;
 
 /***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(0);
+module.exports = __webpack_require__(1);
+
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var DOM3D = function () {
+    function DOM3D() {
+        _classCallCheck(this, DOM3D);
+    }
+
+    _createClass(DOM3D, [{
+        key: "getEl",
+
+        // Get first element matching passed query
+        value: function getEl(query) {
+            return document.querySelector(query);
+        }
+        // Get all elements matching passed query
+
+    }, {
+        key: "getEls",
+        value: function getEls(query) {
+            return [].concat(_toConsumableArray(document.querySelectorAll(query)));
+        }
+    }]);
+
+    return DOM3D;
+}();
+
+exports.default = DOM3D;
+
+/***/ }),
 /* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(1);
-module.exports = __webpack_require__(2);
+"use strict";
 
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _DOM3D2 = __webpack_require__(5);
+
+var _DOM3D3 = _interopRequireDefault(_DOM3D2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Page = function (_DOM3D) {
+    _inherits(Page, _DOM3D);
+
+    function Page(elem) {
+        _classCallCheck(this, Page);
+
+        var _this = _possibleConstructorReturn(this, (Page.__proto__ || Object.getPrototypeOf(Page)).call(this));
+
+        _this.DOM = elem;
+        _this.false = true;
+        _this.rotation = null;
+        _this.translation = null;
+        return _this;
+    }
+    // Get values of pages if setPositionForPages method wasn't called
+    // getValues (elem, prop) {
+    //     const base = '\\((\\d+)\\w*\\)';
+    //     const x = new RegExp(`${prop}X${base}`);
+    //     const y = new RegExp(`${prop}Y${base}`);
+    //     const z = new RegExp(`${prop}Z${base}`);
+    //     const t = elem.style.transform;
+    //     return {
+    //         X : x.exec(t) ? parseInt(x.exec(t)[1]) : 0,
+    //         Y : y.exec(t) ? parseInt(y.exec(t)[1]) : 0,
+    //         Z : z.exec(t) ? parseInt(z.exec(t)[1]) : 0,
+    //     };
+    // }
+    // Set values for rotation and translate from object.
+
+
+    _createClass(Page, [{
+        key: 'setValues',
+        value: function setValues(valObj) {
+            this.rotation = {
+                X: valObj.rX || 0,
+                Y: valObj.rY || 0,
+                Z: valObj.rZ || 0
+            };
+            this.translation = {
+                X: valObj.tX || 0,
+                Y: valObj.tY || 0,
+                Z: valObj.tZ || 0
+            };
+            this.update();
+        }
+        // Update transform for DOM element
+
+    }, {
+        key: 'update',
+        value: function update() {
+            var translate = this.translation.X + 'px, ' + this.translation.Y + 'px, ' + this.translation.Z + 'px';
+            var transform = 'translate3d(' + translate + ') rotateX(' + this.rotation.X + 'deg) rotateY(' + this.rotation.Y + 'deg) rotateZ(' + this.rotation.Z + 'deg)';
+            this.DOM.style.transform = transform;
+        }
+    }]);
+
+    return Page;
+}(_DOM3D3.default);
+
+exports.default = Page;
 
 /***/ })
 /******/ ]);

@@ -61,6 +61,5 @@ export default class Scene extends DOM3D {
         top.style.perspective = `${vh}px`;
         top.style.perspectiveOrigin = `${vw / 2}px ${vh / 2}px`;
         top.style.transformOrigin = `${vw / 2}px ${vh / 2}px 0px`;
-
     }
 }
