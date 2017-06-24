@@ -16,11 +16,10 @@ body {
 }
 #scene {
     position: relative;
+    overflow: hidden;
 }
 
 #view {
-    width: 100vw;
-    height: 100vh;
     position: absolute;
 }
 #container {

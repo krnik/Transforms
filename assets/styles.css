@@ -12,11 +12,10 @@
   bottom: 0; }
 
 #scene {
-  position: relative; }
+  position: relative;
+  overflow: hidden; }
 
 #view {
-  width: 100vw;
-  height: 100vh;
   position: absolute; }
 
 #container {
