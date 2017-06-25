@@ -1,9 +1,9 @@
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
   entry: ['./js/app.js', './styles/main.scss'],
   output: {
-    filename: 'assets/out.js'
+    filename: 'out/app.js'
   },
   watch: true,
   module: {
@@ -29,7 +29,7 @@ module.exports = {
   // Plugins
   plugins: [
     new ExtractTextPlugin({
-      filename: 'assets/styles.css',
+      filename: 'out/styles.css',
       allChunks: true,
     }),
   ],

@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 6);
+/******/ 	return __webpack_require__(__webpack_require__.s = 7);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -116,7 +116,7 @@ var DOM3D = function () {
     }, {
         key: 'append',
         value: function append(node) {
-            this.DOM.appendChild(node.DOM);
+            if (node.DOM) return this.DOM.appendChild(node.DOM);else this.DOM.appendChild(node);
         }
     }]);
 
@@ -132,11 +132,11 @@ exports.default = DOM3D;
 "use strict";
 
 
-var _scene = __webpack_require__(5);
+var _scene = __webpack_require__(6);
 
 var _scene2 = _interopRequireDefault(_scene);
 
-var _freeCam = __webpack_require__(4);
+var _freeCam = __webpack_require__(5);
 
 var _freeCam2 = _interopRequireDefault(_freeCam);
 
@@ -151,16 +151,16 @@ document.addEventListener('DOMContentLoaded', function () {
         tY: 143,
         tZ: 1220
     }, { // Page 2
-        rX: 10,
-        rY: 20,
-        rZ: 30,
+        rX: 0,
+        rY: 50,
+        rZ: 0,
         tX: 2000,
         tY: -500,
         tZ: -660
     }, { // Page 3
         rX: 0,
         rY: 0,
-        rZ: 0,
+        rZ: 120,
         tX: 450,
         tY: 1110,
         tZ: 10
@@ -174,7 +174,8 @@ document.addEventListener('DOMContentLoaded', function () {
     }];
 
     var x = new _scene2.default('.page', '#view');
-    x.setPositionForPages(pagesInitial);
+    x.initPositionForPages(pagesInitial);
+    console.log(x);
     window.freeCam = new _freeCam2.default('#container', 'body');
 });
 
@@ -267,6 +268,135 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _DOM3D2 = __webpack_require__(0);
+
+var _DOM3D3 = _interopRequireDefault(_DOM3D2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Perspective = function (_DOM3D) {
+    _inherits(Perspective, _DOM3D);
+
+    function Perspective(elem, autoSet) {
+        _classCallCheck(this, Perspective);
+
+        var _this = _possibleConstructorReturn(this, (Perspective.__proto__ || Object.getPrototypeOf(Perspective)).call(this, elem));
+
+        _this.vw = null;
+        _this.vh = null;
+        _this.autoUpdatingStyles = {};
+        _this.rotate = {
+            x: 0,
+            y: 0,
+            z: 0
+        };
+        _this.translate = {
+            x: 0,
+            y: 0,
+            z: 0
+        };
+        _this.init(autoSet);
+        return _this;
+    }
+
+    _createClass(Perspective, [{
+        key: 'init',
+        value: function init(autoSet) {
+            if (autoSet) {
+                this.setAutoUpdating('width', 'vw');
+                this.setAutoUpdating('height', 'vh');
+            }
+            this.updateDimensions();
+        }
+    }, {
+        key: 'updateDimensions',
+        value: function updateDimensions(dim) {
+            if ((typeof dim === 'undefined' ? 'undefined' : _typeof(dim)) === 'object') {
+                this.vw = dim.vw;
+                this.vh = dim.vh;
+            } else {
+                this.vw = window.innerWidth;
+                this.vh = window.innerHeight;
+            }
+            this.setElemSize();
+        }
+    }, {
+        key: 'setElemSize',
+        value: function setElemSize() {
+            for (var i in this.autoUpdatingStyles) {
+                var multi = this.autoUpdatingStyles[i][1];
+                if (i === 'transform') {
+                    this.DOM.style[i] = 'translate3d(' + this.vw * multi + 'px, ' + this.vh * multi + 'px, 0px)';
+                    return;
+                }
+                if (i === 'perspectiveOrigin') {
+                    this.DOM.style[i] = this.vw * multi + 'px ' + this.vh * multi + 'px';
+                    return;
+                }
+                var ax = this.autoUpdatingStyles[i][0];
+                var val = this[ax] * multi;
+                this.DOM.style[i] = val + 'px';
+            }
+        }
+    }, {
+        key: 'setAutoUpdating',
+        value: function setAutoUpdating(prop, axis, multiplier) {
+            if (this.autoUpdatingStyles[prop]) console.info('Nadpiszesz wartość');
+            this.autoUpdatingStyles[prop] = [axis, multiplier ? multiplier : 1];
+            this.setElemSize();
+        }
+    }, {
+        key: 'set3D',
+        value: function set3D(val) {
+            if ((typeof val === 'undefined' ? 'undefined' : _typeof(val)) !== 'object') return;
+            console.log(val);
+            this.rotate = {
+                x: val.rX || 0,
+                y: val.rY || 0,
+                z: val.rZ || 0
+            };
+            this.translate = {
+                x: val.tX || 0,
+                y: val.tY || 0,
+                z: val.tZ || 0
+            };
+            this.set3DStyles();
+        }
+    }, {
+        key: 'set3DStyles',
+        value: function set3DStyles() {
+            var transStr = this.translate.x + 'px, ' + this.translate.y + 'px, ' + this.translate.z + 'px';
+            var rotateStr = 'rotateX(' + this.rotate.x + 'deg) rotateY(' + this.rotate.y + 'deg) rotateZ(' + this.rotate.z + 'deg)';
+            this.DOM.style.transform = rotateStr + ' translate3d(' + transStr + ')';
+        }
+    }]);
+
+    return Perspective;
+}(_DOM3D3.default);
+
+exports.default = Perspective;
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -347,7 +477,7 @@ var FreeCam = function () {
 exports.default = FreeCam;
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -369,11 +499,13 @@ var _Page = __webpack_require__(3);
 
 var _Page2 = _interopRequireDefault(_Page);
 
-var _Perspective = __webpack_require__(7);
+var _Perspective = __webpack_require__(4);
 
 var _Perspective2 = _interopRequireDefault(_Perspective);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -403,6 +535,11 @@ var Scene = function (_DOM3D) {
         _this.scene = new _Perspective2.default('DIV', true);
         // Arrays with values of desirable transforms for pages and container
         _this.targets = [];
+        _this.progress = null;
+        // Control bar dom element
+        _this.nav = new _Page2.default('DIV');
+        // Id for timeout function
+        _this.timeoutId = null;
         // Append to DOM, remove later when will be possible to adjust starting css of elements
         _this.init();
         return _this;
@@ -413,22 +550,64 @@ var Scene = function (_DOM3D) {
     _createClass(Scene, [{
         key: 'init',
         value: function init() {
+            var _this2 = this;
+
             // Initial DOM manipulating
             this.scene.set('id', 'scene');
             this.perspDiv.append(this.container);
             this.topMost.append(this.perspDiv);
             this.scene.append(this.topMost);
             this.getEl('body').insertBefore(this.scene.DOM, this.getEl('.loader'));
-
+            // Set basic viewport relative style properties
             this.scene.setAutoUpdating('perspective', 'vh');
+            this.scene.setAutoUpdating('perspectiveOrigin', 'vwvh', 0.5);
             this.perspDiv.setAutoUpdating('perspective', 'vh');
+            this.perspDiv.setAutoUpdating('perspectiveOrigin', 'vwvh', 0.5);
             this.topMost.setAutoUpdating('transform', 'vwvh', 0.5);
+            // Navbar
+            this.nav.set('className', 'nav');
+            var nav_wrapper = document.createElement('DIV');
+            var prev = document.createElement('BUTTON');
+            var next = document.createElement('BUTTON');
+            nav_wrapper.className = 'nav__wrapper';
+            prev.className = 'nav__prev';
+            next.className = 'nav__next';
+            prev.append('Previous');
+            next.append('Next');
+            prev.dataset.dir = -1;
+            next.dataset.dir = 1;
+            nav_wrapper.appendChild(prev);
+            nav_wrapper.appendChild(next);
+            this.nav.append(nav_wrapper);
+            this.getEl('body').appendChild(this.nav.DOM);
+
+            // Add Resize Event Listener
+            window.addEventListener('resize', function () {
+                clearTimeout(_this2.timeoutId);
+                _this2.timeoutId = setTimeout(function () {
+                    console.log('HELLO');
+                    var vw = window.innerWidth;
+                    var vh = window.innerHeight;
+                    _this2.container.updateDimensions(vw, vh);
+                    _this2.perspDiv.updateDimensions(vw, vh);
+                    _this2.topMost.updateDimensions(vw, vh);
+                    _this2.scene.updateDimensions(vw, vh);
+                }, 250);
+            });
+            // Add Prev / Next Event Listener
+            this.getEl('.nav').addEventListener('click', function (ev) {
+                if (ev.target.tagName !== 'BUTTON') return;
+                var dir = parseInt(ev.target.dataset.dir);
+                var progress = _this2.progress;
+                _this2.setProgress(progress + dir);
+                _this2.handleNavBtnDisabling();
+            });
         }
         // Set Starging positions for pages
 
     }, {
-        key: 'setPositionForPages',
-        value: function setPositionForPages(arr) {
+        key: 'initPositionForPages',
+        value: function initPositionForPages(arr) {
             if (arr.length !== this.pages.length) return;
             var _iteratorNormalCompletion = true;
             var _didIteratorError = false;
@@ -457,8 +636,9 @@ var Scene = function (_DOM3D) {
                 }
             }
 
-            this.setContainerPosition(0);
-            this.initControls(arr);
+            this.setProgress(0);
+            this.initTargets(arr);
+            this.handleNavBtnDisabling();
         }
     }, {
         key: 'setContainerPosition',
@@ -472,14 +652,34 @@ var Scene = function (_DOM3D) {
                 tY: pageRef.translate.y * -1,
                 tZ: pageRef.translate.z * -1
             };
-            console.log(values);
             this.container.set3D(values);
         }
     }, {
-        key: 'initControls',
-        value: function initControls(arr) {
+        key: 'setProgress',
+        value: function setProgress(num) {
+            if (typeof num !== 'number') return;
+            this.progress = num;
+            this.setContainerPosition(num);
+        }
+    }, {
+        key: 'initTargets',
+        value: function initTargets(arr) {
             this.targets = arr.slice();
-            console.log(this.targets);
+        }
+    }, {
+        key: 'handleNavBtnDisabling',
+        value: function handleNavBtnDisabling() {
+            [].concat(_toConsumableArray(this.nav.DOM.querySelectorAll('button'))).forEach(function (e) {
+                return e.removeAttribute('disabled');
+            });
+            if (this.progress === 0) {
+                this.nav.DOM.querySelector('.nav__prev').setAttribute('disabled', '');
+                return;
+            }
+            if (this.progress + 1 === this.targets.length) {
+                this.nav.DOM.querySelector('.nav__next').setAttribute('disabled', '');
+                return;
+            }
         }
     }]);
 
@@ -489,141 +689,12 @@ var Scene = function (_DOM3D) {
 exports.default = Scene;
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(1);
 module.exports = __webpack_require__(2);
 
-
-/***/ }),
-/* 7 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _DOM3D2 = __webpack_require__(0);
-
-var _DOM3D3 = _interopRequireDefault(_DOM3D2);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var Perspective = function (_DOM3D) {
-    _inherits(Perspective, _DOM3D);
-
-    function Perspective(elem, autoSet) {
-        _classCallCheck(this, Perspective);
-
-        var _this = _possibleConstructorReturn(this, (Perspective.__proto__ || Object.getPrototypeOf(Perspective)).call(this, elem));
-
-        _this.vw = null;
-        _this.vh = null;
-        _this.autoUpdatingStyles = {};
-        _this.rotate = {
-            x: 0,
-            y: 0,
-            z: 0
-        };
-        _this.translate = {
-            x: 0,
-            y: 0,
-            z: 0
-        };
-        _this.init(autoSet);
-        return _this;
-    }
-
-    _createClass(Perspective, [{
-        key: 'init',
-        value: function init(autoSet) {
-            if (autoSet) {
-                this.setAutoUpdating('width', 'vw');
-                this.setAutoUpdating('height', 'vh');
-            }
-            this.updateDimensions();
-        }
-    }, {
-        key: 'updateDimensions',
-        value: function updateDimensions(dim) {
-            if ((typeof dim === 'undefined' ? 'undefined' : _typeof(dim)) === 'object') {
-                this.vw = dim.vw;
-                this.vh = dim.vh;
-            } else {
-                this.vw = window.innerWidth;
-                this.vh = window.innerHeight;
-            }
-            this.setElemSize();
-        }
-    }, {
-        key: 'setElemSize',
-        value: function setElemSize() {
-            for (var i in this.autoUpdatingStyles) {
-                var multi = this.autoUpdatingStyles[i][1];
-                if (i === 'transform') {
-                    this.DOM.style[i] = 'translate3d(' + this.vw * multi + 'px, ' + this.vh * multi + 'px, 0px)';
-                    return;
-                }
-                // if (i === 'perspectiveOrigin') {
-                //     this.DOM.style[i] = `${this.vw * multi}px ${this.vh * multi}px`;
-                //     return;
-                // }
-                var ax = this.autoUpdatingStyles[i][0];
-                var val = this[ax] * multi;
-                this.DOM.style[i] = val + 'px';
-            }
-        }
-    }, {
-        key: 'setAutoUpdating',
-        value: function setAutoUpdating(prop, axis, multiplier) {
-            if (this.autoUpdatingStyles[prop]) console.info('Nadpiszesz wartość');
-            this.autoUpdatingStyles[prop] = [axis, multiplier ? multiplier : 1];
-            this.setElemSize();
-        }
-    }, {
-        key: 'set3D',
-        value: function set3D(val) {
-            if ((typeof val === 'undefined' ? 'undefined' : _typeof(val)) !== 'object') return;
-            console.log(val);
-            this.rotate = {
-                x: val.rX || 0,
-                y: val.rY || 0,
-                z: val.rZ || 0
-            };
-            this.translate = {
-                x: val.tX || 0,
-                y: val.tY || 0,
-                z: val.tZ || 0
-            };
-            this.set3DStyles();
-        }
-    }, {
-        key: 'set3DStyles',
-        value: function set3DStyles() {
-            var transStr = this.translate.x + 'px, ' + this.translate.y + 'px, ' + this.translate.z + 'px';
-            var rotateStr = 'rotateX(' + this.rotate.x + 'deg) rotateY(' + this.rotate.y + 'deg) rotateZ(' + this.rotate.z + 'deg)';
-            this.DOM.style.transform = rotateStr + ' translate3d(' + transStr + ')';
-        }
-    }]);
-
-    return Perspective;
-}(_DOM3D3.default);
-
-exports.default = Perspective;
 
 /***/ })
 /******/ ]);

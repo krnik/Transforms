@@ -12,9 +12,9 @@ document.addEventListener('DOMContentLoaded', () => {
             tZ : 1220,
         },
         { // Page 2
-            rX : 10,
-            rY : 20,
-            rZ : 30,
+            rX : 0,
+            rY : 50,
+            rZ : 0,
             tX : 2000,
             tY : -500,
             tZ : -660,
@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
         { // Page 3
             rX : 0,
             rY : 0,
-            rZ : 0,
+            rZ : 120,
             tX : 450,
             tY : 1110,
             tZ : 10,
@@ -38,6 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
     ];
 
     const x = new Scene('.page', '#view');
-    x.setPositionForPages(pagesInitial);
+    x.initPositionForPages(pagesInitial);
+    console.log(x);
     window.freeCam = new FreeCam('#container', 'body');
 });

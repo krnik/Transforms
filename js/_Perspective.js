@@ -42,10 +42,10 @@ export default class Perspective extends DOM3D {
                 this.DOM.style[i] = `translate3d(${this.vw * multi}px, ${this.vh * multi}px, 0px)`;
                 return;
             }
-            // if (i === 'perspectiveOrigin') {
-            //     this.DOM.style[i] = `${this.vw * multi}px ${this.vh * multi}px`;
-            //     return;
-            // }
+            if (i === 'perspectiveOrigin') {
+                this.DOM.style[i] = `${this.vw * multi}px ${this.vh * multi}px`;
+                return;
+            }
             const ax = this.autoUpdatingStyles[i][0];
             const val = this[ax] * multi;
             this.DOM.style[i] = `${val}px`;

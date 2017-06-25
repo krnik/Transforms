@@ -16,6 +16,7 @@ export default class DOM3D {
     }
     // Append ChildNode
     append (node) {
-        this.DOM.appendChild(node.DOM);
+        if (node.DOM) return this.DOM.appendChild(node.DOM);
+        else this.DOM.appendChild(node);
     }
 }

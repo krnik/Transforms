@@ -17,6 +17,12 @@ export default class Scene extends DOM3D {
         this.scene = new Perspective('DIV', true);
         // Arrays with values of desirable transforms for pages and container
         this.targets = [];
+        // State of progress. Varies from 0 to this.targets.length - 1
+        this.progress = null;
+        // Control bar dom element
+        this.nav = new Page('DIV');
+        // Id for timeout function
+        this.timeoutId = null;
         // Append to DOM, remove later when will be possible to adjust starting css of elements
         this.init();
     }
@@ -28,19 +34,60 @@ export default class Scene extends DOM3D {
         this.topMost.append(this.perspDiv);
         this.scene.append(this.topMost);
         this.getEl('body').insertBefore(this.scene.DOM, this.getEl('.loader'));
-
+        // Set basic viewport relative style properties
         this.scene.setAutoUpdating('perspective', 'vh');
+        this.scene.setAutoUpdating('perspectiveOrigin', 'vwvh', 0.5);
         this.perspDiv.setAutoUpdating('perspective', 'vh');
+        this.perspDiv.setAutoUpdating('perspectiveOrigin', 'vwvh', 0.5);
         this.topMost.setAutoUpdating('transform', 'vwvh', 0.5);
+        // Navbar
+        this.nav.set('className', 'nav');
+        const nav_wrapper = document.createElement('DIV');
+        const prev = document.createElement('BUTTON');
+        const next = document.createElement('BUTTON');
+        nav_wrapper.className = 'nav__wrapper';
+        prev.className = 'nav__prev';
+        next.className = 'nav__next';
+        prev.append('Previous');
+        next.append('Next');
+        prev.dataset.dir = -1;
+        next.dataset.dir = 1;
+        nav_wrapper.appendChild(prev);
+        nav_wrapper.appendChild(next);
+        this.nav.append(nav_wrapper);
+        this.getEl('body').appendChild(this.nav.DOM);
+
+        // Add Resize Event Listener
+        window.addEventListener('resize', () => {
+            clearTimeout(this.timeoutId);
+            this.timeoutId = setTimeout(() => {
+                console.log('HELLO');
+                const vw = window.innerWidth;
+                const vh = window.innerHeight;
+                this.container.updateDimensions(vw, vh);
+                this.perspDiv.updateDimensions(vw, vh);
+                this.topMost.updateDimensions(vw, vh);
+                this.scene.updateDimensions(vw, vh);
+            }, 250);
+        });
+        // Add Prev / Next Event Listener
+        this.getEl('.nav').addEventListener('click', (ev) => {
+            if (ev.target.tagName !== 'BUTTON') return;
+            const dir = parseInt(ev.target.dataset.dir);
+            const progress = this.progress;
+            this.setProgress(progress + dir);
+            this.handleNavBtnDisabling(); 
+        });
     }
     // Set Starging positions for pages
-    setPositionForPages (arr) {
+    initPositionForPages (arr) {
         if (arr.length !== this.pages.length) return;
         for (let [i, el] of arr.entries()) {
             this.pages[i].setValues(el);
         }
-        this.setContainerPosition(0);
-        this.initControls(arr);
+        this.setProgress(0);
+        this.initTargets(arr);
+        this.handleNavBtnDisabling();
     }
     setContainerPosition (pageNo) {
         const pageRef = this.pages[pageNo];
@@ -52,11 +99,25 @@ export default class Scene extends DOM3D {
             tY : pageRef.translate.y * -1,
             tZ : pageRef.translate.z * -1,
         };
-        console.log(values);
         this.container.set3D(values);
     }
-    initControls (arr) {
+    setProgress (num) {
+        if (typeof num !== 'number') return;
+        this.progress = num;
+        this.setContainerPosition(num);
+    }
+    initTargets (arr) {
         this.targets = arr.slice();
-        console.log(this.targets);
+    }
+    handleNavBtnDisabling () {
+        [...this.nav.DOM.querySelectorAll('button')].forEach(e => e.removeAttribute('disabled'));
+        if (this.progress === 0) {
+            this.nav.DOM.querySelector('.nav__prev').setAttribute('disabled', true);
+            return;
+        }
+        if (this.progress + 1 === this.targets.length) {
+            this.nav.DOM.querySelector('.nav__next').setAttribute('disabled', true);
+            return;
+        }
     }
 }
