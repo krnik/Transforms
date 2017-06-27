@@ -15,6 +15,7 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
+    z-index: -10;
 }
 
 #scene {
@@ -41,8 +42,18 @@ body {
     top: calc(50% - 50vh);
     left: calc(50% - 50vw);
 
-    &__wrapper {}
-
+    &__wrapper {
+        height: 100%;
+        
+        * {
+            transform-style: flat;
+        }
+        
+        iframe {
+            height: 100%;
+            width: 100%;
+        }
+    }
     &__name {
         font-size: 150px;
         transform: translate3d(-200px, -200px,-400px);

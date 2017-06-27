@@ -71,6 +71,10 @@ export default class Perspective extends DOM3D {
         };
         this.set3DStyles();
     }
+    progressCamera (val) {
+        if (typeof val !== 'object') {console.error('ProgressCamera arg is not object'); return;}
+        // Magic
+    };
     set3DStyles () {
         const transStr = `${this.translate.x}px, ${this.translate.y}px, ${this.translate.z}px`;
         const rotateStr = `rotateX(${this.rotate.x}deg) rotateY(${this.rotate.y}deg) rotateZ(${this.rotate.z}deg)`;

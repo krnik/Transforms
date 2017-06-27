@@ -373,6 +373,14 @@ var Perspective = function (_DOM3D) {
             this.set3DStyles();
         }
     }, {
+        key: 'progressCamera',
+        value: function progressCamera(val) {
+            if ((typeof val === 'undefined' ? 'undefined' : _typeof(val)) !== 'object') {
+                console.error('ProgressCamera arg is not object');return;
+            }
+            // Magic
+        }
+    }, {
         key: 'set3DStyles',
         value: function set3DStyles() {
             var transStr = this.translate.x + 'px, ' + this.translate.y + 'px, ' + this.translate.z + 'px';
@@ -535,6 +543,7 @@ var Scene = function (_DOM3D) {
         _this.scene = new _Perspective2.default('DIV', true);
         // Arrays with values of desirable transforms for pages and container
         _this.targets = [];
+        // State of progress. Varies from 0 to this.targets.length - 1
         _this.progress = null;
         // Control bar dom element
         _this.nav = new _Page2.default('DIV');
@@ -561,8 +570,8 @@ var Scene = function (_DOM3D) {
             // Set basic viewport relative style properties
             this.scene.setAutoUpdating('perspective', 'vh');
             this.scene.setAutoUpdating('perspectiveOrigin', 'vwvh', 0.5);
-            this.perspDiv.setAutoUpdating('perspective', 'vh');
-            this.perspDiv.setAutoUpdating('perspectiveOrigin', 'vwvh', 0.5);
+            // this.perspDiv.setAutoUpdating('perspective', 'vh');
+            // this.perspDiv.setAutoUpdating('perspectiveOrigin', 'vwvh', 0.5);
             this.topMost.setAutoUpdating('transform', 'vwvh', 0.5);
             // Navbar
             this.nav.set('className', 'nav');
@@ -636,13 +645,13 @@ var Scene = function (_DOM3D) {
                 }
             }
 
-            this.setProgress(0);
+            this.setProgress(0, true);
             this.initTargets(arr);
             this.handleNavBtnDisabling();
         }
     }, {
         key: 'setContainerPosition',
-        value: function setContainerPosition(pageNo) {
+        value: function setContainerPosition(pageNo, force) {
             var pageRef = this.pages[pageNo];
             var values = {
                 rX: pageRef.rotate.x * -1,
@@ -652,6 +661,10 @@ var Scene = function (_DOM3D) {
                 tY: pageRef.translate.y * -1,
                 tZ: pageRef.translate.z * -1
             };
+            if (force) {
+                this.container.set3D(values);
+                return;
+            }
             this.container.set3D(values);
         }
     }, {
@@ -673,11 +686,11 @@ var Scene = function (_DOM3D) {
                 return e.removeAttribute('disabled');
             });
             if (this.progress === 0) {
-                this.nav.DOM.querySelector('.nav__prev').setAttribute('disabled', '');
+                this.nav.DOM.querySelector('.nav__prev').setAttribute('disabled', true);
                 return;
             }
             if (this.progress + 1 === this.targets.length) {
-                this.nav.DOM.querySelector('.nav__next').setAttribute('disabled', '');
+                this.nav.DOM.querySelector('.nav__next').setAttribute('disabled', true);
                 return;
             }
         }

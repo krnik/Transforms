@@ -37,8 +37,8 @@ export default class Scene extends DOM3D {
         // Set basic viewport relative style properties
         this.scene.setAutoUpdating('perspective', 'vh');
         this.scene.setAutoUpdating('perspectiveOrigin', 'vwvh', 0.5);
-        this.perspDiv.setAutoUpdating('perspective', 'vh');
-        this.perspDiv.setAutoUpdating('perspectiveOrigin', 'vwvh', 0.5);
+        // this.perspDiv.setAutoUpdating('perspective', 'vh');
+        // this.perspDiv.setAutoUpdating('perspectiveOrigin', 'vwvh', 0.5);
         this.topMost.setAutoUpdating('transform', 'vwvh', 0.5);
         // Navbar
         this.nav.set('className', 'nav');
@@ -85,11 +85,11 @@ export default class Scene extends DOM3D {
         for (let [i, el] of arr.entries()) {
             this.pages[i].setValues(el);
         }
-        this.setProgress(0);
+        this.setProgress(0, true);
         this.initTargets(arr);
         this.handleNavBtnDisabling();
     }
-    setContainerPosition (pageNo) {
+    setContainerPosition (pageNo, force) {
         const pageRef = this.pages[pageNo];
         const values = {
             rX : pageRef.rotate.x * -1,
@@ -99,7 +99,11 @@ export default class Scene extends DOM3D {
             tY : pageRef.translate.y * -1,
             tZ : pageRef.translate.z * -1,
         };
-        this.container.set3D(values);
+        if (force) {
+            this.container.set3D(values);
+            return;
+        }
+        this.container.set3D(values); // progressCamera()
     }
     setProgress (num) {
         if (typeof num !== 'number') return;
