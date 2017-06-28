@@ -76,12 +76,12 @@ body {
     position: absolute;
 
     div {
-        width: calc(120vw + 1px);
-        height: calc(120vw + 1px);
+        width: calc(100vw + 1px);
+        height: calc(100vw + 1px);
         background-size: 200%;
         position: absolute;
-        top: calc(50% - 60vw);
-        left: calc(50% - 60vw);
+        top: calc(50% - 50vw);
+        left: calc(50% - 50vw);
 
     }
     .front,
@@ -107,22 +107,22 @@ body {
         background-position: 100% 0;
     }
     .top {
-        transform: rotateX(90deg) rotateZ(90deg) translateZ(60vw);
+        transform: rotateX(90deg) rotateZ(90deg) translateZ(50vw);
     }
     .down {
-        transform: rotateX(-90deg) rotateZ(-90deg) translateZ(60vw);
+        transform: rotateX(-90deg) rotateZ(-90deg) translateZ(50vw);
     }
     .front {
-        transform: translateZ(60vw);
+        transform: translateZ(50vw);
     }
     .back {
-        transform: rotateY(180deg) translateZ(60vw);
+        transform: rotateY(180deg) translateZ(50vw);
     }
     .left {
-        transform: rotateY(-90deg) translateZ(60vw);
+        transform: rotateY(-90deg) translateZ(50vw);
     }
     .right {
-        transform: rotateY(90deg) translateZ(60vw);
+        transform: rotateY(90deg) translateZ(50vw);
     }
 }
 

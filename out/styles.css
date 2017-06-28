@@ -49,26 +49,26 @@
     transform: translate3d(-20vw, -100vh, -100vh); }
 
 .item_0 {
-  border: 10px solid #9f2e29; }
+  border: 10px solid #c087ad; }
 
 .item_1 {
-  border: 10px solid #bf02d5; }
+  border: 10px solid #71fb2c; }
 
 .item_2 {
-  border: 10px solid #6ef189; }
+  border: 10px solid #b2d217; }
 
 .item_3 {
-  border: 10px solid #ea6e44; }
+  border: 10px solid #c413da; }
 
 #skybox {
   position: absolute; }
   #skybox div {
-    width: calc(120vw + 1px);
-    height: calc(120vw + 1px);
+    width: calc(100vw + 1px);
+    height: calc(100vw + 1px);
     background-size: 200%;
     position: absolute;
-    top: calc(50% - 60vw);
-    left: calc(50% - 60vw); }
+    top: calc(50% - 50vw);
+    left: calc(50% - 50vw); }
   #skybox .front,
   #skybox .back {
     background-image: url("../resources/images/skybox-front-back.jpg"); }
@@ -87,17 +87,17 @@
   #skybox .right {
     background-position: 100% 0; }
   #skybox .top {
-    transform: rotateX(90deg) rotateZ(90deg) translateZ(60vw); }
+    transform: rotateX(90deg) rotateZ(90deg) translateZ(50vw); }
   #skybox .down {
-    transform: rotateX(-90deg) rotateZ(-90deg) translateZ(60vw); }
+    transform: rotateX(-90deg) rotateZ(-90deg) translateZ(50vw); }
   #skybox .front {
-    transform: translateZ(60vw); }
+    transform: translateZ(50vw); }
   #skybox .back {
-    transform: rotateY(180deg) translateZ(60vw); }
+    transform: rotateY(180deg) translateZ(50vw); }
   #skybox .left {
-    transform: rotateY(-90deg) translateZ(60vw); }
+    transform: rotateY(-90deg) translateZ(50vw); }
   #skybox .right {
-    transform: rotateY(90deg) translateZ(60vw); }
+    transform: rotateY(90deg) translateZ(50vw); }
 
 .nav {
   position: fixed;
