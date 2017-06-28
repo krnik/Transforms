@@ -5,7 +5,7 @@ import View from './View.jsx';
 import Loader from './Loader.jsx';
 import Nav from './Nav.jsx';
 
-import FreeCam from './freeCam.js';
+// import FreeCam from './freeCam.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     const pagesInitial = [ //r-rotate t-translate
@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
             translateX : 50,
             translateY : 143,
             translateZ : 1220,
+            content : 'https://krnik.github.io/Chairs/',
         },
         { // Page 2
             rotateX : 0,
@@ -56,7 +57,23 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         componentDidMount () {
-            window.addEventListener('resize', this.handleWindowResize)
+            window.addEventListener('resize', this.handleWindowResize);
+            const st = document.createElement('style');
+            st.append(
+                this.props.pages.reduce((acc, val, i) => {
+                    const rx = val.rotateX ? val.rotateX * -1 : 0;
+                    const ry = val.rotateY ? val.rotateY * -1 : 0;
+                    const rz = val.rotateZ ? val.rotateZ * -1 : 0;
+                    const tx = val.translateX ? val.translateX * -1 : 0;
+                    const ty = val.translateY ? val.translateY * -1 : 0;
+                    const tz = val.translateZ ? val.translateZ * -1 : 0;
+                    const cam = `.show-${i} { transform : rotateX(${rx}deg) rotateY(${ry}deg) rotateZ(${rz}deg) translate3d(${tx}px, ${ty}px, ${tz}px) }\n`;
+                    const sb = `.skybox-${i} { transform: translate3d(0, 0, 50vh) scale3d(25, 25, 25) rotateX(${rx}deg) rotateY(${ry}deg) rotateZ(${rz}deg) }\n`;
+                    return acc + cam + sb;
+                }, '')
+            );
+            st.append(`#camera, #skybox { transition: transform ${this.props.transition.time} ${this.props.transition.function} }\n#skybox { transform-origin: 0 0 ${this.state.vh / 4}px }`);
+            document.querySelector('head').appendChild(st);
         }
         
         handleWindowResize = () => {
@@ -66,15 +83,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     vw : window.innerWidth,
                     vh : window.innerHeight,
                 });
-            }, 250);
+            }, 200);
         };
         
         handleCamProgressChange = (dir) => {
-            const cam = this.state.camProgress;
-            const camNew = cam + dir;
-            if (camNew < 0 || camNew === this.state.len) return;
-            this.setState({camProgress : camNew});
-            // this.setState({camProgress : cam});
+            const newCameraPosition = this.state.camProgress + dir;
+            if (newCameraPosition < 0 || newCameraPosition === this.state.len) return;
+            this.setState({camProgress : newCameraPosition});
         };
 
         render () {
@@ -86,18 +101,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 perspective : this.state.vh,
                 perspectiveOrigin : `${vwHalf}px ${vhHalf >> 1}px`,
             };
-            const dim = {
+            const size = {
                 vw : this.state.vw,
                 vh : this.state.vh,
             };
 
             return <div id="scene" style={css}>
-                {/*<Loader dim={dim} />*/}
+                <Loader size={size} />
                 <View
-                    pagesData={this.props.pages}
-                    dim={dim}
-                    cam={this.state.camProgress}
-                    fps={50} />
+                    pages={this.props.pages}
+                    size={size}
+                    camProgress={this.state.camProgress}
+                    transition={this.props.transition} />
                 <Nav
                     current={this.state.camProgress}
                     len={this.state.len}
@@ -106,18 +121,14 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-
+    const transitionSettings = {
+        function : 'cubic-bezier(.28,.73,.65,.56)',
+        time : '1.75s',
+    };
     ReactDOM.render(
-        <App pages={pagesInitial}/>,
+        <App
+            pages={pagesInitial}
+            transition={transitionSettings}/>,
         document.querySelector('#app')
     );
-    setTimeout(() => {
-        window.freeCam = new FreeCam('#camera', 'body');
-    }, 2000);
 });
-
-
-// const x = new Scene('.page', '#view');
-// x.initPositionForPages(pagesInitial);
-// console.log(x);
-// window.freeCam = new FreeCam('#container', 'body');

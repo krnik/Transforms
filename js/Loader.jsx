@@ -9,30 +9,15 @@ export default class Loader extends React.Component {
         };
     }
     
-    componentDidMount () {
-        this.fadeOutTimeout = setTimeout(() => {
-            this.setState({
-                class: 'loader loaded',
-            });
-            this.hideTimeout = setTimeout(() => {
-                this.setState({visible : false});
-            }, 500);
-        }, 2000);
-    }
-    
-    componentWillUnmount () {
-        clearTimeout(this.fadeOutTimeout);
-        clearTimeout(this.hideTimeout);
-    }
-
     render () {
         if (!this.state.visible) return null;
-        const dim = {
-            width : this.props.dim.vw,
-            height : this.props.dim.vh,
+        const css = {
+            width : this.props.size.vw,
+            height : this.props.size.vh,
         };
-        return <div style={dim} className={this.state.class}>
-            Jakiś fajny tekst
+        return <div style={css} className={this.state.class}>
+            <div></div>
+            <div></div>
         </div>;
     }
 }

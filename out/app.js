@@ -9804,7 +9804,8 @@ document.addEventListener('DOMContentLoaded', function () {
         rotateZ: 0,
         translateX: 50,
         translateY: 143,
-        translateZ: 1220
+        translateZ: 1220,
+        content: 'https://krnik.github.io/Chairs/'
     }, { // Page 2
         rotateX: 0,
         rotateY: 50,
@@ -9843,15 +9844,13 @@ document.addEventListener('DOMContentLoaded', function () {
                         vw: window.innerWidth,
                         vh: window.innerHeight
                     });
-                }, 250);
+                }, 200);
             };
 
             _this.handleCamProgressChange = function (dir) {
-                var cam = _this.state.camProgress;
-                var camNew = cam + dir;
-                if (camNew < 0 || camNew === _this.state.len) return;
-                _this.setState({ camProgress: camNew });
-                // this.setState({camProgress : cam});
+                var newCameraPosition = _this.state.camProgress + dir;
+                if (newCameraPosition < 0 || newCameraPosition === _this.state.len) return;
+                _this.setState({ camProgress: newCameraPosition });
             };
 
             _this.state = {
@@ -9868,6 +9867,20 @@ document.addEventListener('DOMContentLoaded', function () {
             key: 'componentDidMount',
             value: function componentDidMount() {
                 window.addEventListener('resize', this.handleWindowResize);
+                var st = document.createElement('style');
+                st.append(this.props.pages.reduce(function (acc, val, i) {
+                    var rx = val.rotateX ? val.rotateX * -1 : 0;
+                    var ry = val.rotateY ? val.rotateY * -1 : 0;
+                    var rz = val.rotateZ ? val.rotateZ * -1 : 0;
+                    var tx = val.translateX ? val.translateX * -1 : 0;
+                    var ty = val.translateY ? val.translateY * -1 : 0;
+                    var tz = val.translateZ ? val.translateZ * -1 : 0;
+                    var cam = '.show-' + i + ' { transform : rotateX(' + rx + 'deg) rotateY(' + ry + 'deg) rotateZ(' + rz + 'deg) translate3d(' + tx + 'px, ' + ty + 'px, ' + tz + 'px) }\n';
+                    var sb = '.skybox-' + i + ' { transform: translate3d(0, 0, 50vh) scale3d(25, 25, 25) rotateX(' + rx + 'deg) rotateY(' + ry + 'deg) rotateZ(' + rz + 'deg) }\n';
+                    return acc + cam + sb;
+                }, ''));
+                st.append('#camera, #skybox { transition: transform ' + this.props.transition.time + ' ' + this.props.transition.function + ' }\n#skybox { transform-origin: 0 0 ' + this.state.vh / 4 + 'px }');
+                document.querySelector('head').appendChild(st);
             }
         }, {
             key: 'render',
@@ -9880,7 +9893,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     perspective: this.state.vh,
                     perspectiveOrigin: vwHalf + 'px ' + (vhHalf >> 1) + 'px'
                 };
-                var dim = {
+                var size = {
                     vw: this.state.vw,
                     vh: this.state.vh
                 };
@@ -9888,11 +9901,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 return _react2.default.createElement(
                     'div',
                     { id: 'scene', style: css },
+                    _react2.default.createElement(_Loader2.default, { size: size }),
                     _react2.default.createElement(_View2.default, {
-                        pagesData: this.props.pages,
-                        dim: dim,
-                        cam: this.state.camProgress,
-                        fps: 50 }),
+                        pages: this.props.pages,
+                        size: size,
+                        camProgress: this.state.camProgress,
+                        transition: this.props.transition }),
                     _react2.default.createElement(_Nav2.default, {
                         current: this.state.camProgress,
                         len: this.state.len,
@@ -9904,16 +9918,14 @@ document.addEventListener('DOMContentLoaded', function () {
         return App;
     }(_react2.default.Component);
 
-    _reactDom2.default.render(_react2.default.createElement(App, { pages: pagesInitial }), document.querySelector('#app'));
-    setTimeout(function () {
-        window.freeCam = new _freeCam2.default('#camera', 'body');
-    }, 2000);
+    var transitionSettings = {
+        function: 'cubic-bezier(.28,.73,.65,.56)',
+        time: '1.75s'
+    };
+    _reactDom2.default.render(_react2.default.createElement(App, {
+        pages: pagesInitial,
+        transition: transitionSettings }), document.querySelector('#app'));
 });
-
-// const x = new Scene('.page', '#view');
-// x.initPositionForPages(pagesInitial);
-// console.log(x);
-// window.freeCam = new FreeCam('#container', 'body');
 
 /***/ }),
 /* 83 */
@@ -10028,37 +10040,18 @@ var Loader = function (_React$Component) {
     }
 
     _createClass(Loader, [{
-        key: 'componentDidMount',
-        value: function componentDidMount() {
-            var _this2 = this;
-
-            this.fadeOutTimeout = setTimeout(function () {
-                _this2.setState({
-                    class: 'loader loaded'
-                });
-                _this2.hideTimeout = setTimeout(function () {
-                    _this2.setState({ visible: false });
-                }, 500);
-            }, 2000);
-        }
-    }, {
-        key: 'componentWillUnmount',
-        value: function componentWillUnmount() {
-            clearTimeout(this.fadeOutTimeout);
-            clearTimeout(this.hideTimeout);
-        }
-    }, {
         key: 'render',
         value: function render() {
             if (!this.state.visible) return null;
-            var dim = {
-                width: this.props.dim.vw,
-                height: this.props.dim.vh
+            var css = {
+                width: this.props.size.vw,
+                height: this.props.size.vh
             };
             return _react2.default.createElement(
                 'div',
-                { style: dim, className: this.state.class },
-                'Jaki\u015B fajny tekst'
+                { style: css, className: this.state.class },
+                _react2.default.createElement('div', null),
+                _react2.default.createElement('div', null)
             );
         }
     }]);
@@ -10188,28 +10181,18 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var Page = function (_React$Component) {
     _inherits(Page, _React$Component);
 
-    function Page(props) {
+    function Page() {
         _classCallCheck(this, Page);
 
-        var _this = _possibleConstructorReturn(this, (Page.__proto__ || Object.getPrototypeOf(Page)).call(this, props));
-
-        _this.state = {
-            rotateX: _this.props.page.rotateX,
-            rotateY: _this.props.page.rotateY,
-            rotateZ: _this.props.page.rotateZ,
-            translateX: _this.props.page.translateX,
-            translateY: _this.props.page.translateY,
-            translateZ: _this.props.page.translateZ
-        };
-        return _this;
+        return _possibleConstructorReturn(this, (Page.__proto__ || Object.getPrototypeOf(Page)).apply(this, arguments));
     }
 
     _createClass(Page, [{
         key: "render",
         value: function render() {
-            var translate = "translate3d(" + this.state.translateX + "px, " + this.state.translateY + "px, " + this.state.translateZ + "px)";
+            var translate = "translate3d(" + this.props.page.translateX + "px, " + this.props.page.translateY + "px, " + this.props.page.translateZ + "px)";
             var pageCss = {
-                transform: translate + " rotateX(" + this.state.rotateX + "deg) rotateY(" + this.state.rotateY + "deg) rotateZ(" + this.state.rotateZ + "deg)"
+                transform: translate + " rotateX(" + this.props.page.rotateX + "deg) rotateY(" + this.props.page.rotateY + "deg) rotateZ(" + this.props.page.rotateZ + "deg)"
             };
             var pageName = this.props.page.name ? this.props.page.name : "Page: " + this.props.id;
 
@@ -10217,7 +10200,11 @@ var Page = function (_React$Component) {
                 "div",
                 { style: pageCss,
                     className: "page item_" + this.props.id },
-                _react2.default.createElement("div", { className: "page__wrapper" }),
+                _react2.default.createElement(
+                    "div",
+                    { className: "page__wrapper" },
+                    this.props.page.content ? _react2.default.createElement("iframe", { src: this.props.page.content }) : null
+                ),
                 _react2.default.createElement(
                     "div",
                     { className: "page__name" },
@@ -10270,120 +10257,47 @@ var View = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (View.__proto__ || Object.getPrototypeOf(View)).call(this, props));
 
         _this.state = {
-            targets: _this.props.pagesData.slice(),
-            currentTarget: _this.props.cam,
-            currentPos: {
-                rotateX: _this.props.pagesData[_this.props.cam].rotateX * -1,
-                rotateY: _this.props.pagesData[_this.props.cam].rotateY * -1,
-                rotateZ: _this.props.pagesData[_this.props.cam].rotateZ * -1,
-                translateX: _this.props.pagesData[_this.props.cam].translateX * -1,
-                translateY: _this.props.pagesData[_this.props.cam].translateY * -1,
-                translateZ: _this.props.pagesData[_this.props.cam].translateZ * -1
-            }
+            currentTarget: _this.props.camProgress
         };
         return _this;
     }
 
     _createClass(View, [{
-        key: 'calcCameraPosition',
-        value: function calcCameraPosition() {
-            var cam = this.state.currentPos;
-            var translate = 'translate3d(' + cam.translateX + 'px, ' + cam.translateY + 'px, ' + cam.translateZ + 'px)';
-            var rotate = 'rotateX(' + cam.rotateX + 'deg) rotateY(' + cam.rotateY + 'deg) rotateZ(' + cam.rotateZ + 'deg)';
-            return rotate + ' ' + translate;
-        }
-    }, {
         key: 'componentWillReceiveProps',
         value: function componentWillReceiveProps(nextProps) {
-            var _this2 = this;
-
-            if (nextProps.cam === this.state.currentTarget) return;
-            clearInterval(this.animInterval);
-            this.setState({ currentTarget: nextProps.cam });
-            var nextPos = Object.assign({}, this.state.targets[nextProps.cam]);
-            var fps = this.props.fps;
-            // CurrentPositions
-            var crX = this.state.currentPos.rotateX;
-            var crY = this.state.currentPos.rotateY;
-            var crZ = this.state.currentPos.rotateZ;
-            var ctX = this.state.currentPos.translateX;
-            var ctY = this.state.currentPos.translateY;
-            var ctZ = this.state.currentPos.translateZ;
-            console.log(crX, crY, crZ, ctX, ctY, ctZ);
-            // TargetPositions
-            var trX = nextPos.rotateX * -1;
-            var trY = nextPos.rotateY * -1;
-            var trZ = nextPos.rotateZ * -1;
-            var ttX = nextPos.translateX * -1;
-            var ttY = nextPos.translateY * -1;
-            var ttZ = nextPos.translateZ * -1;
-            console.log(trX, trY, trZ, ttX, ttY, ttZ);
-            // Adding part 
-            var arX = (trX - crX) / (fps * 2);
-            var arY = (trY - crY) / (fps * 2);
-            var arZ = (trZ - crZ) / (fps * 2);
-            var atX = (ttX - ctX) / (fps * 2);
-            var atY = (ttY - ctY) / (fps * 2);
-            var atZ = (ttZ - ctZ) / (fps * 2);
-            console.log('arX:' + arX + '\narY:' + arY + '\narZ:' + arZ + '\natX:' + atX + '\natY:' + atY + '\natZ:' + atZ);
-            this.animInterval = setInterval(function () {
-                var posRounded = {
-                    rotateX: Math.round(_this2.state.currentPos.rotateX),
-                    rotateY: Math.round(_this2.state.currentPos.rotateY),
-                    rotateZ: Math.round(_this2.state.currentPos.rotateZ),
-                    translateX: Math.round(_this2.state.currentPos.translateX),
-                    translateY: Math.round(_this2.state.currentPos.translateY),
-                    translateZ: Math.round(_this2.state.currentPos.translateZ)
-                };
-                if (posRounded.rotateX >= trX && posRounded.rotateY >= trY && posRounded.rotateZ >= trZ && posRounded.translateX >= ttX && posRounded.translateY >= ttY && posRounded.translateZ >= ttZ) {
-                    console.log('kuniec');
-                    clearInterval(_this2.animInterval);
-                    _this2.setState({
-                        currentPos: posRounded
-                    });
-                    return;
-                }
-                var newPos = {
-                    rotateX: _this2.state.currentPos.rotateX + arX,
-                    rotateY: _this2.state.currentPos.rotateY + arY,
-                    rotateZ: _this2.state.currentPos.rotateZ + arZ,
-                    translateX: _this2.state.currentPos.translateX + atX,
-                    translateY: _this2.state.currentPos.translateY + atY,
-                    translateZ: _this2.state.currentPos.translateZ + atZ
-                };
-                _this2.setState({
-                    currentPos: newPos
-                });
-            }, 1000 / fps);
-        }
-    }, {
-        key: 'componentWillUnmount',
-        value: function componentWillUnmount() {
-            clearInterval(this.animInterval);
+            this.setState({ currentTarget: nextProps.camProgress });
         }
     }, {
         key: 'render',
         value: function render() {
-            var pages = this.props.pagesData.map(function (p, i) {
+            var pages = this.props.pages.map(function (p, i) {
                 return _react2.default.createElement(_Page2.default, { page: p, id: i, key: i });
             });
 
-            var vw = this.props.dim.vw;
-            var vh = this.props.dim.vh;
+            var vw = this.props.size.vw;
+            var vh = this.props.size.vh;
             var viewCss = {
                 transform: 'translate3d(' + (vw >> 1) + 'px, ' + (vh >> 1) + 'px, 0px)'
             };
-            var cameraCss = {
-                transform: this.calcCameraPosition(this.state.currentTarget)
-            };
+            var targetNo = this.state.currentTarget;
 
             return _react2.default.createElement(
                 'div',
                 { id: 'view', style: viewCss },
                 _react2.default.createElement(
                     'div',
-                    { id: 'camera', style: cameraCss },
+                    { id: 'camera', className: 'show-' + targetNo },
                     pages
+                ),
+                _react2.default.createElement(
+                    'div',
+                    { id: 'skybox', className: 'skybox-' + targetNo },
+                    _react2.default.createElement('div', { className: 'front' }),
+                    _react2.default.createElement('div', { className: 'back' }),
+                    _react2.default.createElement('div', { className: 'top' }),
+                    _react2.default.createElement('div', { className: 'down' }),
+                    _react2.default.createElement('div', { className: 'left' }),
+                    _react2.default.createElement('div', { className: 'right' })
                 )
             );
         }

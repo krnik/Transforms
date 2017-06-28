@@ -10,8 +10,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 20;
-  background-color: #32325a;
+  z-index: -20;
   opacity: 1;
   transition: opacity 0.5s ease-in; }
 
@@ -50,25 +49,55 @@
     transform: translate3d(-20vw, -100vh, -100vh); }
 
 .item_0 {
-  border: 10px solid #7a62c0; }
+  border: 10px solid #9f2e29; }
 
 .item_1 {
-  border: 10px solid #1991cd; }
+  border: 10px solid #bf02d5; }
 
 .item_2 {
-  border: 10px solid #47678f; }
+  border: 10px solid #6ef189; }
 
 .item_3 {
-  border: 10px solid #cf2331; }
+  border: 10px solid #ea6e44; }
 
 #skybox {
   position: absolute; }
   #skybox div {
-    background-image: url("../resources/images/skybox-cyber.jpg");
-    width: 100vh;
-    height: 100vh; }
+    width: calc(120vw + 1px);
+    height: calc(120vw + 1px);
+    background-size: 200%;
+    position: absolute;
+    top: calc(50% - 60vw);
+    left: calc(50% - 60vw); }
+  #skybox .front,
+  #skybox .back {
+    background-image: url("../resources/images/skybox-front-back.jpg"); }
+  #skybox .top,
+  #skybox .down {
+    background-image: url("../resources/images/skybox-top-down.jpg"); }
+  #skybox .left,
+  #skybox .right {
+    background-image: url("../resources/images/skybox-left-right.jpg"); }
+  #skybox .front,
+  #skybox .top,
+  #skybox .left {
+    background-position: 0; }
+  #skybox .back,
+  #skybox .down,
+  #skybox .right {
+    background-position: 100% 0; }
+  #skybox .top {
+    transform: rotateX(90deg) rotateZ(90deg) translateZ(60vw); }
+  #skybox .down {
+    transform: rotateX(-90deg) rotateZ(-90deg) translateZ(60vw); }
   #skybox .front {
-    background-position: 25% 0; }
+    transform: translateZ(60vw); }
+  #skybox .back {
+    transform: rotateY(180deg) translateZ(60vw); }
+  #skybox .left {
+    transform: rotateY(-90deg) translateZ(60vw); }
+  #skybox .right {
+    transform: rotateY(90deg) translateZ(60vw); }
 
 .nav {
   position: fixed;

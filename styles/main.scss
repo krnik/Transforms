@@ -15,11 +15,11 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    z-index: 20;
-    background-color: rgba(50, 50, 90, 1);
+    z-index: -20;
     opacity: 1;
     transition: opacity 0.5s ease-in;
-}
+}    
+
 .loaded {
     opacity: 0;
 }
@@ -74,20 +74,56 @@ body {
 
 #skybox {
     position: absolute;
-    
+
     div {
-        background-image: url('../resources/images/skybox-cyber.jpg');
-        width: 100vh;
-        height: 100vh;
+        width: calc(120vw + 1px);
+        height: calc(120vw + 1px);
+        background-size: 200%;
+        position: absolute;
+        top: calc(50% - 60vw);
+        left: calc(50% - 60vw);
+
+    }
+    .front,
+    .back {
+        background-image: url('../resources/images/skybox-front-back.jpg');
+    }
+    .top,
+    .down {
+        background-image: url('../resources/images/skybox-top-down.jpg');
+    }
+    .left,
+    .right {
+        background-image: url('../resources/images/skybox-left-right.jpg');
+    }
+    .front,
+    .top,
+    .left {
+        background-position: 0;
+    }
+    .back,
+    .down,
+    .right {
+        background-position: 100% 0;
+    }
+    .top {
+        transform: rotateX(90deg) rotateZ(90deg) translateZ(60vw);
+    }
+    .down {
+        transform: rotateX(-90deg) rotateZ(-90deg) translateZ(60vw);
     }
     .front {
-        background-position: 25% 0;
+        transform: translateZ(60vw);
     }
-    .back {}
-    .top {}
-    .bottom {}
-    .left {}
-    .right {}
+    .back {
+        transform: rotateY(180deg) translateZ(60vw);
+    }
+    .left {
+        transform: rotateY(-90deg) translateZ(60vw);
+    }
+    .right {
+        transform: rotateY(90deg) translateZ(60vw);
+    }
 }
 
 .nav {
