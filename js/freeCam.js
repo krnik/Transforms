@@ -38,8 +38,6 @@ export default class FreeCam {
             this.transform(event);
         };
         this.view.addEventListener('mousedown', (event) => {
-            this.mouseStartX = event.offsetX;
-            this.mouseStartY = event.offsetY;
             this.view.addEventListener('mousemove', addMouseTrack);
         });
         this.view.addEventListener('mouseup', () => {

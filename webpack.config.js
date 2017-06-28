@@ -1,7 +1,7 @@
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
-  entry: ['./js/app.js', './styles/main.scss'],
+  entry: ['./js/app.jsx', './styles/main.scss'],
   output: {
     filename: 'out/app.js'
   },
@@ -11,17 +11,17 @@ module.exports = {
     rules: [
         // JS
         {
-            test: /\.js$/,
+            test: /\.jsx$/,
             exclude: [ /node_modules/ ],
             use: [{
                 loader: 'babel-loader',
-                options: { presets: ['es2015'] },
+                options: { presets: ['es2015', 'stage-2', 'react'] },
             }],
         },
         // SCSS / SASS
         {
             test: /\.(sass|scss)$/,
-            use: ExtractTextPlugin.extract(['css-loader', 'sass-loader'])
+            use: ExtractTextPlugin.extract(['raw-loader', 'sass-loader'])
         },
     ]
 

@@ -15,7 +15,13 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    z-index: -10;
+    z-index: 20;
+    background-color: rgba(50, 50, 90, 1);
+    opacity: 1;
+    transition: opacity 0.5s ease-in;
+}
+.loaded {
+    opacity: 0;
 }
 
 #scene {
@@ -27,7 +33,7 @@ body {
     position: absolute;
 }
 
-#container {
+#camera {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -56,34 +62,39 @@ body {
     }
     &__name {
         font-size: 150px;
-        transform: translate3d(-200px, -200px,-400px);
+        transform: translate3d(-20vw, -100vh,-100vh);
     }
 }
-.item_{
-    &1 {
-        border: 5px solid rgb(40, 100, 200);
-        background-color: rgba(200, 100, 40, 0.3);
-    }
 
-    &2 {
-        border: 5px solid rgb(140, 100, 180);
-        background-color: rgba(180, 100, 140, 0.3);
-    }
-
-    &3 {
-        border: 5px solid rgb(240, 200, 100);
-        background-color: rgba(100, 200, 240, 0.3);
-    }
-
-    &4 {
-        border: 5px solid rgb(120, 200, 70);
-        background-color: rgba(70, 200, 120, 0.3);
+@for $i from 0 through 3 {
+    .item_#{$i} {
+        border: 10px solid rgb((random(256) - 1), (random(256) - 1), (random(256) - 1));
     }
 }
+
+#skybox {
+    position: absolute;
+    
+    div {
+        background-image: url('../resources/images/skybox-cyber.jpg');
+        width: 100vh;
+        height: 100vh;
+    }
+    .front {
+        background-position: 25% 0;
+    }
+    .back {}
+    .top {}
+    .bottom {}
+    .left {}
+    .right {}
+}
+
 .nav {
     position: fixed;
     left: 0;
     right: 0;
+    bottom: 0;
     transition: bottom 0.4s;
     
     &:hover &__wrapper {
@@ -126,6 +137,12 @@ body {
         padding: 5px;
         margin: 5px;
         cursor: pointer;
+    }
+
+    span {
+        font-weight: bold;
+        font-size: 1.5em;
+        color: white;
     }
 
     &__prev {
