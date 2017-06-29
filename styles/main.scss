@@ -1,3 +1,5 @@
+@import 'page1';
+
 * {
     margin: 0;
     padding: 0;
@@ -66,8 +68,8 @@ body {
     }
 }
 
-@for $i from 0 through 3 {
-    .item_#{$i} {
+@for $i from 1 through 3 {
+    .item-#{$i} {
         border: 10px solid rgb((random(256) - 1), (random(256) - 1), (random(256) - 1));
     }
 }

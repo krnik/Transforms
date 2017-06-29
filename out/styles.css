@@ -1,3 +1,16 @@
+#welcome {
+  background-color: black;
+  user-select: none;
+  position: relative; }
+  #welcome h1 {
+    position: absolute;
+    width: 200px;
+    height: 100px;
+    top: calc(50% - 50px);
+    left: calc(50% - 100px);
+    font-size: 3em;
+    text-align: center; }
+
 * {
   margin: 0;
   padding: 0;
@@ -48,17 +61,14 @@
     font-size: 150px;
     transform: translate3d(-20vw, -100vh, -100vh); }
 
-.item_0 {
-  border: 10px solid #c087ad; }
+.item-1 {
+  border: 10px solid #115e2c; }
 
-.item_1 {
-  border: 10px solid #71fb2c; }
+.item-2 {
+  border: 10px solid #7f1cf5; }
 
-.item_2 {
-  border: 10px solid #b2d217; }
-
-.item_3 {
-  border: 10px solid #c413da; }
+.item-3 {
+  border: 10px solid #e9323d; }
 
 #skybox {
   position: absolute; }
