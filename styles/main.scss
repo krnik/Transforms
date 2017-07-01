@@ -89,14 +89,20 @@ body {
     .front,
     .back {
         background-image: url('../resources/images/skybox-front-back.jpg');
+        background-image: url('../resources/images/monochrome/skybox-front-back.jpg');
+        background-image: url('../resources/images/brightness/skybox-front-back.jpg');
     }
     .top,
     .down {
         background-image: url('../resources/images/skybox-top-down.jpg');
+        background-image: url('../resources/images/monochrome/skybox-top-down.jpg');
+        background-image: url('../resources/images/brightness/skybox-top-down.jpg');
     }
     .left,
     .right {
         background-image: url('../resources/images/skybox-left-right.jpg');
+        background-image: url('../resources/images/monochrome/skybox-left-right.jpg');
+        background-image: url('../resources/images/brightness/skybox-left-right.jpg');
     }
     .front,
     .top,
@@ -156,7 +162,7 @@ body {
 
     &__wrapper {
         position: fixed;
-        bottom: -50px;
+        bottom: -55px;
         height: 60px;
         left: 0;
         right: 0;

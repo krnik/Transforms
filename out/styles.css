@@ -62,13 +62,13 @@
     transform: translate3d(-20vw, -100vh, -100vh); }
 
 .item-1 {
-  border: 10px solid #115e2c; }
+  border: 10px solid #27844e; }
 
 .item-2 {
-  border: 10px solid #7f1cf5; }
+  border: 10px solid #739044; }
 
 .item-3 {
-  border: 10px solid #e9323d; }
+  border: 10px solid #7ab7c8; }
 
 #skybox {
   position: absolute; }
@@ -81,13 +81,19 @@
     left: calc(50% - 50vw); }
   #skybox .front,
   #skybox .back {
-    background-image: url("../resources/images/skybox-front-back.jpg"); }
+    background-image: url("../resources/images/skybox-front-back.jpg");
+    background-image: url("../resources/images/monochrome/skybox-front-back.jpg");
+    background-image: url("../resources/images/brightness/skybox-front-back.jpg"); }
   #skybox .top,
   #skybox .down {
-    background-image: url("../resources/images/skybox-top-down.jpg"); }
+    background-image: url("../resources/images/skybox-top-down.jpg");
+    background-image: url("../resources/images/monochrome/skybox-top-down.jpg");
+    background-image: url("../resources/images/brightness/skybox-top-down.jpg"); }
   #skybox .left,
   #skybox .right {
-    background-image: url("../resources/images/skybox-left-right.jpg"); }
+    background-image: url("../resources/images/skybox-left-right.jpg");
+    background-image: url("../resources/images/monochrome/skybox-left-right.jpg");
+    background-image: url("../resources/images/brightness/skybox-left-right.jpg"); }
   #skybox .front,
   #skybox .top,
   #skybox .left {
@@ -132,7 +138,7 @@
     color: white; }
   .nav__wrapper {
     position: fixed;
-    bottom: -50px;
+    bottom: -55px;
     height: 60px;
     left: 0;
     right: 0;

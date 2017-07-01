@@ -23,7 +23,7 @@ class Particle {
         const lifeP = this.lifeTime / this.maxLifeTime;
         this.size = this.startSize + (this.endSize - this.startSize) * lifeP;
         // this.alpha = Math.max(0.1 * (1 - (lifeP * 1.1)), 0);
-        this.alpha = Math.max(0.1 * Math.sin((lifeP) * Math.PI), 0);
+        this.alpha = Math.max(0.02 * Math.sin((lifeP) * Math.PI), 0);
         this.x = this.x + this.velX;
         this.y = this.y + this.velY;
     }
