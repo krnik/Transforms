@@ -62,13 +62,13 @@
     transform: translate3d(-20vw, -100vh, -100vh); }
 
 .item-1 {
-  border: 10px solid #27844e; }
+  border: 10px solid #ee207c; }
 
 .item-2 {
-  border: 10px solid #739044; }
+  border: 10px solid #881b58; }
 
 .item-3 {
-  border: 10px solid #7ab7c8; }
+  border: 10px solid #d95b6b; }
 
 #skybox {
   position: absolute; }

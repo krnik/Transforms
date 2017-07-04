@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import View from './View.jsx';
-import Loader from './Loader.jsx';
 import Nav from './Nav.jsx';
 import content from './content.jsx';
 import Smoke from './smoke.js';
@@ -25,11 +24,11 @@ document.addEventListener('DOMContentLoaded', () => {
             rotateX : 0,
             rotateY : 50,
             rotateZ : 0,
-            translateX : 2000,
+            translateX : 2700,
             translateY : -500,
-            translateZ : -660,
+            translateZ : -1660,
             content : content.p2,
-            name : 'Pong',
+            name : 'Page 2',
         },
         { // Page 3
             rotateX : 0,
@@ -37,16 +36,16 @@ document.addEventListener('DOMContentLoaded', () => {
             rotateZ : 120,
             translateX : 450,
             translateY : 1110,
-            translateZ : 10,
+            translateZ : -4010,
             content : content.p3,
-            name : 'Sit On Chair',
+            name : 'Page 3',
         },
         { // Page 4
             rotateX : 0,
             rotateY : 0,
             rotateZ : 0,
-            translateX : 0,
-            translateY : 1500,
+            translateX : 220,
+            translateY : 3500,
             translateZ : -2400,
             content : content.p4,
             name : 'The End',
@@ -124,7 +123,6 @@ document.addEventListener('DOMContentLoaded', () => {
             };
 
             return <div id="scene" style={css}>
-                <Loader size={size} />
                 <View
                     pages={this.props.pages}
                     size={size}
@@ -148,10 +146,14 @@ document.addEventListener('DOMContentLoaded', () => {
             transition={transitionSettings}/>,
         document.querySelector('#app')
     );
+
     window.smoke = new Smoke(document.querySelector('#welcome'), './resources/images/smoke.png');
     window.camProgression = 0;
     window.smoking = function smokingAnimation () {
-        if (window.camProgression !== 0) return;
+        if (window.camProgression !== 0) {
+            smoke.clear();
+            return;
+        };
         smoke.draw();
         requestAnimationFrame(smoking);
     };

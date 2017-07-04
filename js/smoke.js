@@ -81,6 +81,11 @@ export default class Smoke {
         }
     }
 
+    clear () {
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        return null;
+    }
+
     draw () {
         if (!this.play) return;
         const l = this.parts.length;

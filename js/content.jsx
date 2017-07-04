@@ -4,17 +4,11 @@ const page1 = <div className="page__wrapper" id="welcome">
     <h1>Helloooo</h1>
 </div>;
 
-const page2 = <div className="page__wrapper">
-    
-</div>;
+const page2 = <div className="page__wrapper"></div>;
 
-const page3 = <div className="page__wrapper">
-    <iframe src="https://krnik.github.io/Chairs/" />
-</div>;
+const page3 = <div className="page__wrapper"></div>;
 
-const page4 = <div className="page__wrapper">
-    
-</div>;
+const page4 = <div className="page__wrapper"></div>;
 
 export default {
     p1 : page1,
