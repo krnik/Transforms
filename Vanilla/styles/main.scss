@@ -1,0 +1,139 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    transform-style: preserve-3d;
+}
+
+body {
+    // overflow: hidden;
+}
+
+.loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -10;
+}
+
+#scene {
+    position: relative;
+    overflow: hidden;
+}
+
+#view {
+    position: absolute;
+}
+
+#container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    right: 50%;
+    bottom: 50%;
+}
+
+.page {
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    top: calc(50% - 50vh);
+    left: calc(50% - 50vw);
+
+    &__wrapper {
+        height: 100%;
+        
+        * {
+            transform-style: flat;
+        }
+        
+        iframe {
+            height: 100%;
+            width: 100%;
+        }
+    }
+    &__name {
+        font-size: 150px;
+        transform: translate3d(-200px, -200px,-400px);
+    }
+}
+.item_{
+    &1 {
+        border: 5px solid rgb(40, 100, 200);
+        background-color: rgba(200, 100, 40, 0.3);
+    }
+
+    &2 {
+        border: 5px solid rgb(140, 100, 180);
+        background-color: rgba(180, 100, 140, 0.3);
+    }
+
+    &3 {
+        border: 5px solid rgb(240, 200, 100);
+        background-color: rgba(100, 200, 240, 0.3);
+    }
+
+    &4 {
+        border: 5px solid rgb(120, 200, 70);
+        background-color: rgba(70, 200, 120, 0.3);
+    }
+}
+.nav {
+    position: fixed;
+    left: 0;
+    right: 0;
+    transition: bottom 0.4s;
+    z-index: 20;
+    
+    &:hover &__wrapper {
+        bottom : 0;
+    }
+
+    &::before {
+        content: '\2261';
+        position: fixed;
+        width: 50px;
+        height: 50px;
+        top: -40px;
+        left: calc(50% - 25px); 
+        font-size: 2em;
+        text-align: center;
+        border-top-left-radius: 50%;
+        border-top-right-radius: 50%;
+        background-color: rgba(50, 50, 90, 1);
+        color: white;
+    }
+
+    &__wrapper {
+        position: fixed;
+        bottom: -50px;
+        height: 60px;
+        left: 0;
+        right: 0;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        transition: bottom 0.4s;
+        background-color: rgba(50, 50, 90, 1)
+    }
+
+    button {
+        font-size: 1em;
+        height: 40px;
+        width: 140px;
+        max-width: 49%;
+        padding: 5px;
+        margin: 5px;
+        cursor: pointer;
+    }
+
+    &__prev {
+
+    }
+
+    &__next {
+
+    }
+}
