@@ -102,12 +102,12 @@ export default class Perspective extends DOM3D {
                 transZ : Math.round(this.translate.z),
             };
             if (
-                round.rotX >= val.rX &&
-                round.rotY >= val.rY &&
-                round.rotZ >= val.rZ &&
-                round.transX >= val.tX &&
-                round.transY >= val.tY &&
-                round.transZ >= val.tZ
+                round.rotX === val.rX &&
+                round.rotY === val.rY &&
+                round.rotZ === val.rZ &&
+                round.transX === val.tX &&
+                round.transY === val.tY &&
+                round.transZ === val.tZ
             ) {
                 clearInterval(this.intervalId);
                 return;

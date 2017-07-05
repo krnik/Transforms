@@ -56,7 +56,6 @@ export default class Scene extends DOM3D {
         window.addEventListener('resize', () => {
             clearTimeout(this.timeoutId);
             this.timeoutId = setTimeout(() => {
-                console.log('HELLO');
                 const vw = window.innerWidth;
                 const vh = window.innerHeight;
                 this.container.updateDimensions(vw, vh);

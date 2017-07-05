@@ -2,4 +2,4 @@
 
 Four pages located in 3D space, use nav buttons on the bottom of the page to change visible page.
 
-[Site](https://github.com/krnik/Transforms)
+[Site](https://krnik.github.io/Transforms/index.html)

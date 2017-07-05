@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
             rZ : 0,
             tX : 50,
             tY : 143,
-            tZ : 1220,
+            tZ : 2100,
         },
         { // Page 2
             rX : 0,
@@ -23,9 +23,9 @@ document.addEventListener('DOMContentLoaded', () => {
             rX : 0,
             rY : 0,
             rZ : 120,
-            tX : 450,
-            tY : 1110,
-            tZ : 10,
+            tX : 1750,
+            tY : 1800,
+            tZ : -1300,
         },
         { // Page 4
             rX : 0,

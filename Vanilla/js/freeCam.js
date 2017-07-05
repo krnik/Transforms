@@ -7,14 +7,13 @@ export default class FreeCam {
         this.rotateY = 0;
         this.rotateZ = 0;
         // Current deg of rotate
-        this.prevRotX = this.getRotateValues('X');
-        this.prevRotY = this.getRotateValues('Y');
-        this.prevRotZ = this.getRotateValues('Z');
+        this.prevRotX = 0;
+        this.prevRotY = 0;
+        this.prevRotZ = 0;
         //Translates
-        const translation = this.getTranslate3dValues();
-        this.translateX = translation[0];
-        this.translateY = translation[1];
-        this.translateZ = translation[2];
+        this.translateX = 0;
+        this.translateY = 0;
+        this.translateZ = 0;
         //Point of mousedown event
         this.mouseStartX = 0;
         this.mouseStartY = 0;
@@ -28,16 +27,28 @@ export default class FreeCam {
     }
 
     getRotateValues (axis) {
-        const regExpStr = axis + '\\((-?\\d+)deg';
+        const regExpStr = axis + '\\((-?\\d+.?\\d*)deg';
         const val = this.target.style.transform.match(new RegExp(regExpStr));
         return parseInt(val[1]);
     }
 
+    updatePosition () {
+        this.prevRotX = this.getRotateValues('X');
+        this.prevRotY = this.getRotateValues('Y');
+        this.prevRotZ = this.getRotateValues('Z');
+        const translate = this.getTranslate3dValues();
+        this.translateX = translate[0];
+        this.translateY = translate[1];
+        this.translateZ = translate[2];
+    }
+
     init () {
+        this.updatePosition();
         const addMouseTrack = (event) => {
             this.transform(event);
         };
         this.view.addEventListener('mousedown', (event) => {
+            this.updatePosition();
             this.mouseStartX = event.offsetX;
             this.mouseStartY = event.offsetY;
             this.view.addEventListener('mousemove', addMouseTrack);
