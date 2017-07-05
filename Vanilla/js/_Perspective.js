@@ -57,7 +57,7 @@ export default class Perspective extends DOM3D {
         this.autoUpdatingStyles[prop] = [axis, multiplier ? multiplier : 1];
         this.setElemSize();
     }
-    set3D (val) {
+    set3D (val, skybox) {
         if (typeof val !== 'object') return;
         this.rotate = {
             x : val.rX || 0,
@@ -69,9 +69,9 @@ export default class Perspective extends DOM3D {
             y : val.tY || 0,
             z : val.tZ || 0,
         };
-        this.set3DStyles();
+        this.set3DStyles(skybox);
     }
-    progressCamera (val, fps) {
+    progressCamera (val, fps, skybox) {
         if (typeof val !== 'object') {
             console.error('ProgressCamera arg is not object');
             return;
@@ -124,12 +124,16 @@ export default class Perspective extends DOM3D {
             };
             this.rotate = nextRotate;
             this.translate = nextTranslate;
-            this.set3DStyles();
+            this.set3DStyles(skybox);
         }, (1000 / fps));
     };
-    set3DStyles () {
+    set3DStyles (skybox) {
         const transStr = `${this.translate.x}px, ${this.translate.y}px, ${this.translate.z}px`;
         const rotateStr = `rotateX(${this.rotate.x}deg) rotateY(${this.rotate.y}deg) rotateZ(${this.rotate.z}deg)`;
+        if (skybox) {
+            this.DOM.style.transform = `${rotateStr} translate3d(${transStr}) scale3d(25, 25, 25)`;
+            return;
+        }
         this.DOM.style.transform = `${rotateStr} translate3d(${transStr})`;
     }
 }

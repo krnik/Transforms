@@ -239,6 +239,8 @@ var Scene = function (_DOM3D) {
         _this.topMost = new _Perspective2.default(_this.getEl(viewQuery));
         // Scene element
         _this.scene = new _Perspective2.default('DIV', true);
+        // Skybox
+        _this.skybox = new _Perspective2.default(_this.getEl('#skybox'));
         // Arrays with values of desirable transforms for pages and container
         _this.targets = [];
         // State of progress. Varies from 0 to this.targets.length - 1
@@ -251,6 +253,7 @@ var Scene = function (_DOM3D) {
         _this.init();
         return _this;
     }
+
     // Initialize all functions of object
 
 
@@ -305,6 +308,7 @@ var Scene = function (_DOM3D) {
                 _this2.handleNavBtnDisabling();
             });
         }
+
         // Set Starging positions for pages
 
     }, {
@@ -346,6 +350,14 @@ var Scene = function (_DOM3D) {
         key: 'setContainerPosition',
         value: function setContainerPosition(pageNo, force) {
             var pageRef = this.pages[pageNo];
+            var skyboxVals = {
+                rX: pageRef.rotate.x * -1,
+                rY: pageRef.rotate.y * -1,
+                rZ: pageRef.rotate.z * -1,
+                tX: pageRef.translate.x,
+                tY: pageRef.translate.y,
+                tZ: pageRef.translate.z
+            };
             var values = {
                 rX: pageRef.rotate.x * -1,
                 rY: pageRef.rotate.y * -1,
@@ -356,9 +368,11 @@ var Scene = function (_DOM3D) {
             };
             if (force) {
                 this.container.set3D(values);
+                this.skybox.set3D(skyboxVals, true);
                 return;
             }
             this.container.progressCamera(values, 40);
+            this.skybox.progressCamera(skyboxVals, 40, true);
         }
     }, {
         key: 'setProgress',
@@ -567,7 +581,7 @@ var Perspective = function (_DOM3D) {
         }
     }, {
         key: 'set3D',
-        value: function set3D(val) {
+        value: function set3D(val, skybox) {
             if ((typeof val === 'undefined' ? 'undefined' : _typeof(val)) !== 'object') return;
             this.rotate = {
                 x: val.rX || 0,
@@ -579,11 +593,11 @@ var Perspective = function (_DOM3D) {
                 y: val.tY || 0,
                 z: val.tZ || 0
             };
-            this.set3DStyles();
+            this.set3DStyles(skybox);
         }
     }, {
         key: 'progressCamera',
-        value: function progressCamera(val, fps) {
+        value: function progressCamera(val, fps, skybox) {
             var _this2 = this;
 
             if ((typeof val === 'undefined' ? 'undefined' : _typeof(val)) !== 'object') {
@@ -631,14 +645,18 @@ var Perspective = function (_DOM3D) {
                 };
                 _this2.rotate = nextRotate;
                 _this2.translate = nextTranslate;
-                _this2.set3DStyles();
+                _this2.set3DStyles(skybox);
             }, 1000 / fps);
         }
     }, {
         key: 'set3DStyles',
-        value: function set3DStyles() {
+        value: function set3DStyles(skybox) {
             var transStr = this.translate.x + 'px, ' + this.translate.y + 'px, ' + this.translate.z + 'px';
             var rotateStr = 'rotateX(' + this.rotate.x + 'deg) rotateY(' + this.rotate.y + 'deg) rotateZ(' + this.rotate.z + 'deg)';
+            if (skybox) {
+                this.DOM.style.transform = rotateStr + ' translate3d(' + transStr + ') scale3d(25, 25, 25)';
+                return;
+            }
             this.DOM.style.transform = rotateStr + ' translate3d(' + transStr + ')';
         }
     }]);

@@ -13,6 +13,8 @@ export default class Scene extends DOM3D {
         this.topMost = new Perspective(this.getEl(viewQuery));
         // Scene element
         this.scene = new Perspective('DIV', true);
+        // Skybox
+        this.skybox = new Perspective(this.getEl('#skybox'));
         // Arrays with values of desirable transforms for pages and container
         this.targets = [];
         // State of progress. Varies from 0 to this.targets.length - 1
@@ -24,6 +26,7 @@ export default class Scene extends DOM3D {
         // Append to DOM, remove later when will be possible to adjust starting css of elements
         this.init();
     }
+
     // Initialize all functions of object
     init () {
         // Initial DOM manipulating
@@ -72,6 +75,7 @@ export default class Scene extends DOM3D {
             this.handleNavBtnDisabling(); 
         });
     }
+
     // Set Starging positions for pages
     initPositionForPages (arr) {
         if (arr.length !== this.pages.length) return;
@@ -82,8 +86,17 @@ export default class Scene extends DOM3D {
         this.initTargets(arr);
         this.handleNavBtnDisabling();
     }
+
     setContainerPosition (pageNo, force) {
         const pageRef = this.pages[pageNo];
+        const skyboxVals = {
+            rX : pageRef.rotate.x * -1,
+            rY : pageRef.rotate.y * -1,
+            rZ : pageRef.rotate.z * -1,
+            tX : pageRef.translate.x,
+            tY : pageRef.translate.y,
+            tZ : pageRef.translate.z,
+        };
         const values = {
             rX : pageRef.rotate.x * -1,
             rY : pageRef.rotate.y * -1,
@@ -94,18 +107,23 @@ export default class Scene extends DOM3D {
         };
         if (force) {
             this.container.set3D(values);
+            this.skybox.set3D(skyboxVals, true);
             return;
         }
         this.container.progressCamera(values, 40);
+        this.skybox.progressCamera(skyboxVals, 40, true);
     }
+
     setProgress (num, force) {
         if (typeof num !== 'number') return;
         this.progress = num;
         this.setContainerPosition(num, force);
     }
+
     initTargets (arr) {
         this.targets = arr.slice();
     }
+
     handleNavBtnDisabling () {
         [...this.nav.DOM.querySelectorAll('button')].forEach(e => e.removeAttribute('disabled'));
         if (this.progress === 0) {
