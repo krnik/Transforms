@@ -39,6 +39,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const x = new Scene('.page', '#view');
     x.initPositionForPages(pagesInitial);
-    console.log(x);
     window.freeCam = new FreeCam('#container', '#scene');
 });

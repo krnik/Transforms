@@ -3,6 +3,7 @@
     padding: 0;
     box-sizing: border-box;
     transform-style: preserve-3d;
+    user-select: none;
 }
 
 body {
@@ -57,27 +58,24 @@ body {
     &__name {
         font-size: 150px;
         transform: translate3d(-200px, -200px,-400px);
+        color: burlywood;
     }
 }
 .item_{
     &1 {
         border: 5px solid rgb(40, 100, 200);
-        background-color: rgba(200, 100, 40, 0.3);
     }
 
     &2 {
         border: 5px solid rgb(140, 100, 180);
-        background-color: rgba(180, 100, 140, 0.3);
     }
 
     &3 {
         border: 5px solid rgb(240, 200, 100);
-        background-color: rgba(100, 200, 240, 0.3);
     }
 
     &4 {
         border: 5px solid rgb(120, 200, 70);
-        background-color: rgba(70, 200, 120, 0.3);
     }
 }
 .nav {

@@ -180,7 +180,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     var x = new _scene2.default('.page', '#view');
     x.initPositionForPages(pagesInitial);
-    console.log(x);
     window.freeCam = new _freeCam2.default('#container', '#scene');
 });
 
@@ -350,14 +349,6 @@ var Scene = function (_DOM3D) {
         key: 'setContainerPosition',
         value: function setContainerPosition(pageNo, force) {
             var pageRef = this.pages[pageNo];
-            var skyboxVals = {
-                rX: pageRef.rotate.x * -1,
-                rY: pageRef.rotate.y * -1,
-                rZ: pageRef.rotate.z * -1,
-                tX: pageRef.translate.x,
-                tY: pageRef.translate.y,
-                tZ: pageRef.translate.z
-            };
             var values = {
                 rX: pageRef.rotate.x * -1,
                 rY: pageRef.rotate.y * -1,
@@ -368,11 +359,11 @@ var Scene = function (_DOM3D) {
             };
             if (force) {
                 this.container.set3D(values);
-                this.skybox.set3D(skyboxVals, true);
+                this.skybox.set3D(values, true);
                 return;
             }
             this.container.progressCamera(values, 40);
-            this.skybox.progressCamera(skyboxVals, 40, true);
+            this.skybox.progressCamera(values, 40, true);
         }
     }, {
         key: 'setProgress',
@@ -606,6 +597,8 @@ var Perspective = function (_DOM3D) {
             }
             clearInterval(this.intervalId);
             // Current TRANSFORM values
+            // To make it fully compatibile with freeCam it should get values
+            // straight from inline style. 
             var crX = this.rotate.x;
             var crY = this.rotate.y;
             var crZ = this.rotate.z;
@@ -630,6 +623,17 @@ var Perspective = function (_DOM3D) {
                     transZ: Math.round(_this2.translate.z)
                 };
                 if (round.rotX === val.rX && round.rotY === val.rY && round.rotZ === val.rZ && round.transX === val.tX && round.transY === val.tY && round.transZ === val.tZ) {
+                    _this2.rotate = {
+                        x: val.rX,
+                        y: val.rY,
+                        z: val.rZ
+                    };
+                    _this2.translate = {
+                        x: val.tX,
+                        y: val.tY,
+                        z: val.tZ
+                    };
+                    _this2.set3DStyles(skybox);
                     clearInterval(_this2.intervalId);
                     return;
                 }
@@ -743,8 +747,8 @@ var FreeCam = function () {
             };
             this.view.addEventListener('mousedown', function (event) {
                 _this.updatePosition();
-                _this.mouseStartX = event.offsetX;
-                _this.mouseStartY = event.offsetY;
+                _this.mouseStartX = event.screenX;
+                _this.mouseStartY = event.screenY;
                 _this.view.addEventListener('mousemove', addMouseTrack);
             });
             this.view.addEventListener('mouseup', function () {
@@ -756,10 +760,11 @@ var FreeCam = function () {
     }, {
         key: 'transform',
         value: function transform(event) {
-            this.rotateY = (event.offsetX - this.mouseStartX) / 24;
-            this.rotateX = (event.offsetY - this.mouseStartY) / 24;
+            this.rotateY = (event.screenX - this.mouseStartX) / 24;
+            this.rotateX = (event.screenY - this.mouseStartY) / 24;
             var translate = this.translateX + 'px, ' + this.translateY + 'px, ' + this.translateZ + 'px';
             this.target.style.transform = 'rotateX(' + (this.rotateX + this.prevRotX) + 'deg) rotateY(' + (this.rotateY + this.prevRotY) + 'deg) rotateZ(0deg) translate3d(' + translate + ')';
+            document.querySelector('#skybox').style.transform = 'rotateX(' + (this.rotateX + this.prevRotX) + 'deg) rotateY(' + (this.rotateY + this.prevRotY) + 'deg) rotateZ(' + (this.rotateZ + this.prevRotZ) + 'deg) translate3d(' + this.translateX * -1 + 'px, ' + this.translateY * -1 + 'px, ' + this.translateZ * -1 + 'px) scale3d(25, 25, 25)';
         }
     }]);
 

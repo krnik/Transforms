@@ -49,8 +49,8 @@ export default class FreeCam {
         };
         this.view.addEventListener('mousedown', (event) => {
             this.updatePosition();
-            this.mouseStartX = event.offsetX;
-            this.mouseStartY = event.offsetY;
+            this.mouseStartX = event.screenX;
+            this.mouseStartY = event.screenY;
             this.view.addEventListener('mousemove', addMouseTrack);
         });
         this.view.addEventListener('mouseup', () => {
@@ -61,9 +61,10 @@ export default class FreeCam {
     }
 
     transform (event) {
-      this.rotateY = (event.offsetX - this.mouseStartX) / 24;
-      this.rotateX = (event.offsetY - this.mouseStartY) / 24;
+      this.rotateY = (event.screenX - this.mouseStartX) / 24;
+      this.rotateX = (event.screenY - this.mouseStartY) / 24;
       const translate = `${this.translateX}px, ${this.translateY}px, ${this.translateZ}px`;
       this.target.style.transform = `rotateX(${this.rotateX + this.prevRotX}deg) rotateY(${this.rotateY + this.prevRotY}deg) rotateZ(0deg) translate3d(${translate})`;
+      document.querySelector('#skybox').style.transform = `rotateX(${(this.rotateX + this.prevRotX)}deg) rotateY(${(this.rotateY + this.prevRotY)}deg) rotateZ(${(this.rotateZ + this.prevRotZ)}deg) translate3d(${this.translateX * (-1)}px, ${this.translateY * (-1)}px, ${this.translateZ * (-1)}px) scale3d(25, 25, 25)`;
     }
 }

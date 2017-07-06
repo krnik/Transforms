@@ -78,6 +78,8 @@ export default class Perspective extends DOM3D {
         }
         clearInterval(this.intervalId);
         // Current TRANSFORM values
+        // To make it fully compatibile with freeCam it should get values
+        // straight from inline style. 
         const crX = this.rotate.x;
         const crY = this.rotate.y;
         const crZ = this.rotate.z;
@@ -109,6 +111,17 @@ export default class Perspective extends DOM3D {
                 round.transY === val.tY &&
                 round.transZ === val.tZ
             ) {
+                this.rotate = {
+                    x : val.rX,
+                    y : val.rY,
+                    z : val.rZ,
+                };
+                this.translate = {
+                    x : val.tX,
+                    y : val.tY,
+                    z : val.tZ,
+                };
+                this.set3DStyles(skybox);
                 clearInterval(this.intervalId);
                 return;
             }

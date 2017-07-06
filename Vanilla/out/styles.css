@@ -2,7 +2,8 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  transform-style: preserve-3d; }
+  transform-style: preserve-3d;
+  user-select: none; }
 
 .loader {
   position: fixed;
@@ -41,23 +42,20 @@
       width: 100%; }
   .page__name {
     font-size: 150px;
-    transform: translate3d(-200px, -200px, -400px); }
+    transform: translate3d(-200px, -200px, -400px);
+    color: burlywood; }
 
 .item_1 {
-  border: 5px solid #2864c8;
-  background-color: rgba(200, 100, 40, 0.3); }
+  border: 5px solid #2864c8; }
 
 .item_2 {
-  border: 5px solid #8c64b4;
-  background-color: rgba(180, 100, 140, 0.3); }
+  border: 5px solid #8c64b4; }
 
 .item_3 {
-  border: 5px solid #f0c864;
-  background-color: rgba(100, 200, 240, 0.3); }
+  border: 5px solid #f0c864; }
 
 .item_4 {
-  border: 5px solid #78c846;
-  background-color: rgba(70, 200, 120, 0.3); }
+  border: 5px solid #78c846; }
 
 .nav {
   position: fixed;

@@ -88,15 +88,7 @@ export default class Scene extends DOM3D {
     }
 
     setContainerPosition (pageNo, force) {
-        const pageRef = this.pages[pageNo];
-        const skyboxVals = {
-            rX : pageRef.rotate.x * -1,
-            rY : pageRef.rotate.y * -1,
-            rZ : pageRef.rotate.z * -1,
-            tX : pageRef.translate.x,
-            tY : pageRef.translate.y,
-            tZ : pageRef.translate.z,
-        };
+        const pageRef = this.pages[pageNo]
         const values = {
             rX : pageRef.rotate.x * -1,
             rY : pageRef.rotate.y * -1,
@@ -107,11 +99,11 @@ export default class Scene extends DOM3D {
         };
         if (force) {
             this.container.set3D(values);
-            this.skybox.set3D(skyboxVals, true);
+            this.skybox.set3D(values, true);
             return;
         }
         this.container.progressCamera(values, 40);
-        this.skybox.progressCamera(skyboxVals, 40, true);
+        this.skybox.progressCamera(values, 40, true);
     }
 
     setProgress (num, force) {
